@@ -3,7 +3,7 @@ from datetime import date
 
 
 @dataclass
-class WeatherReading:
+class WeatherRecord:
     date: date
     max_temp: float | None
     min_temp: float | None

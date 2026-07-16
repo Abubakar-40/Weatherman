@@ -3,7 +3,7 @@ from datetime import date
 from weather.constants import BLUE, RED, RESET
 
 
-class Report:
+class WeatherReport:
     def generate_yearly_summary(self, result):
         highest_date = result.highest_date.strftime("%B %d")
         highest_line = f"Highest: {int(result.highest):02d}C on {highest_date}"

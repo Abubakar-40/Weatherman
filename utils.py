@@ -1,7 +1,7 @@
 import argparse
 
 from weather.calculators import Calculator
-from weather.reports import ChartReport, Report
+from weather.reports import ChartReport, WeatherReport
 
 
 def parse_year_month(value):
@@ -60,7 +60,7 @@ def run_yearly_summary_report(data_parser, year):
     if result is None:
         exit_with_error("Not enough weather data available for the requested year.")
 
-    report_text = Report().generate_yearly_summary(result)
+    report_text = WeatherReport().generate_yearly_summary(result)
     print(report_text,"\n")
 
 def run_monthly_average_report(data_parser, year, month):
@@ -70,7 +70,7 @@ def run_monthly_average_report(data_parser, year, month):
     if result is None:
         exit_with_error("Not enough weather data available for the requested month.")
 
-    report_text = Report().generate_monthly_average(result)
+    report_text = WeatherReport().generate_monthly_average(result)
     print(report_text,"\n")
 
 def run_daily_chart_report(data_parser, year, month):

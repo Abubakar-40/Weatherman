@@ -30,7 +30,7 @@ python main.py --help
 ```
 
 ```
-usage: weatherman [-h] [-e YYYY] data_dir
+usage: weatherman [-h] [-e YYYY] [-a YYYY/M] data_dir
 
 Generate weather reports from historical weather data files.
 
@@ -39,7 +39,10 @@ positional arguments:
 
 options:
   -h, --help  show this help message and exit
-  -e YYYY     Print the yearly summary report for the given year, e.g. -e 2011.
+  -e YYYY     Print the yearly summary report for the given year, e.g. -e
+              2011.
+  -a YYYY/M   Print the monthly averages report for the given year and month,
+              e.g. -a 2005/6.
 ```
 
 ## What's implemented
@@ -57,6 +60,39 @@ python main.py weather_files -e 2007
 Highest: 44C on November 04
 Lowest: -1C on February 22
 Humidity: 100% on February 11
+```
+
+### Monthly Averages Report (`-a YYYY/M`)
+
+Prints the average of the daily highs, average of the daily lows, and
+average mean humidity for the given year and month.
+
+```bash
+python main.py weather_files -a 2010/12
+```
+
+```
+Highest Average: 12C
+Lowest Average: 5C
+Average Mean Humidity: 44%
+```
+
+### Combining multiple reports
+
+Flags can be combined in a single run.
+
+```bash
+python main.py weather_files -e 2007 -a 2010/12
+```
+
+```
+Highest: 44C on November 04
+Lowest: -1C on February 22
+Humidity: 100% on February 11
+
+Highest Average: 12C
+Lowest Average: 5C
+Average Mean Humidity: 44%
 ```
 
 ## Project structure
@@ -78,6 +114,6 @@ The flow for every report follows the same pipeline:
 parser (reads files) -> calculator (computes results) -> report (formats text)
 ```
 
-More report types (monthly averages, daily charts, combined charts) are
-planned and will extend `models.py`, `calculators.py`, and `reports.py` with
-additional classes, following the same pipeline.
+More report types (daily charts, combined charts) are planned and will
+extend `models.py`, `calculators.py`, and `reports.py` with additional
+classes, following the same pipeline.

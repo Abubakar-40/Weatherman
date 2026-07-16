@@ -1,4 +1,4 @@
-from weather.models import WeatherReading, YearlySummary
+from weather.models import MonthlyAverages, WeatherReading, YearlySummary
 
 
 class YearlySummaryCalculator:
@@ -24,3 +24,20 @@ class YearlySummaryCalculator:
         )
 
         return summary
+
+class MonthlyAverageCalculator:
+    def calculate(self, readings: list[WeatherReading]):
+        max_temps = [reading.max_temp for reading in readings if reading.max_temp is not None]
+        min_temps = [reading.min_temp for reading in readings if reading.min_temp is not None]
+        mean_humidities = [reading.mean_humidity for reading in readings if reading.mean_humidity is not None]
+
+        if not max_temps or not min_temps or not mean_humidities:
+            raise ValueError("Not enough weather data available for the requested month.")
+
+        averages = MonthlyAverages(
+            avg_highest_temp=sum(max_temps) / len(max_temps),
+            avg_lowest_temp=sum(min_temps) / len(min_temps),
+            avg_mean_humidity=sum(mean_humidities) / len(mean_humidities),
+        )
+
+        return averages

@@ -18,3 +18,9 @@ class YearlySummary:
     lowest_temp_date: date
     most_humid_day_humidity: float
     most_humid_day_date: date
+
+@dataclass(frozen=True)
+class MonthlyAverages:
+    avg_highest_temp: float
+    avg_lowest_temp: float
+    avg_mean_humidity: float

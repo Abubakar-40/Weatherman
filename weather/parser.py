@@ -4,13 +4,36 @@ import pandas
 
 from weather.models import WeatherReading
 
+MONTH_ABBREVIATIONS = {
+    1: "Jan",
+    2: "Feb",
+    3: "Mar",
+    4: "Apr",
+    5: "May",
+    6: "Jun",
+    7: "Jul",
+    8: "Aug",
+    9: "Sep",
+    10: "Oct",
+    11: "Nov",
+    12: "Dec",
+}
+
 
 class WeatherDataParser:
     def __init__(self, data_dir: Path):
         self.data_dir = data_dir
 
     def get_readings_for_year(self, year: int):
-        matching_files = sorted(self.data_dir.glob(f"*_{year}_*.txt"))
+        return self.get_readings_matching(f"*_{year}_*.txt")
+
+    def get_readings_for_month(self, year: int, month: int):
+        month_abbreviation = MONTH_ABBREVIATIONS[month]
+
+        return self.get_readings_matching(f"*_{year}_{month_abbreviation}.txt")
+
+    def get_readings_matching(self, pattern: str):
+        matching_files = sorted(self.data_dir.glob(pattern))
         readings = []
 
         for file_path in matching_files:

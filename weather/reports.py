@@ -1,4 +1,4 @@
-from weather.models import YearlySummary
+from weather.models import MonthlyAverages, YearlySummary
 
 
 class YearlySummaryReport:
@@ -32,3 +32,12 @@ class YearlySummaryReport:
         line = f"Humidity: {int(humidity)}% on {formatted_date}"
 
         return line
+
+class MonthlyAverageReport:
+    def generate(self, averages: MonthlyAverages):
+        highest_line = f"Highest Average: {round(averages.avg_highest_temp)}C"
+        lowest_line = f"Lowest Average: {round(averages.avg_lowest_temp)}C"
+        humidity_line = f"Average Mean Humidity: {round(averages.avg_mean_humidity)}%"
+        report_text = "\n".join([highest_line, lowest_line, humidity_line])
+
+        return report_text

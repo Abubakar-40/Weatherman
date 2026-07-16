@@ -45,6 +45,8 @@ options:
               e.g. -a 2005/6.
   -c YYYY/MM  Print the daily temperature chart for the given year and month,
               e.g. -c 2011/03.
+  -b YYYY/M   Print the combined daily bar chart for the given year and month,
+              e.g. -b 2011/3.
 ```
 
 ## What's implemented
@@ -116,6 +118,25 @@ Lowest Average: 5C
 Average Mean Humidity: 44%
 ```
 
+### Combined Daily Bar Chart (`-b YYYY/M`) — bonus
+
+Prints one bar per day, combining the low and high temperatures into a
+single bar (bar length = low + high), labeled as `LOWC - HIGHC` at the end.
+Colors show when run in an actual terminal; shown below without color codes.
+
+```bash
+python main.py weather_files -b 2011/3
+```
+
+```
+March 2011
+01 +++++ 00C - 05C
+02 ++++ 00C - 04C
+03 ++++++ 00C - 06C
+04 ++++ 00C - 04C
+05 +++++++++ 03C - 06C
+```
+
 ## Project structure
 
 ```
@@ -135,5 +156,4 @@ The flow for every report follows the same pipeline:
 parser (reads files) -> calculator (computes results) -> report (formats text)
 ```
 
-More report types (the combined bar chart) are planned and will extend
-`reports.py` further, following the same pipeline.
+All report types from the spec (`-e`, `-a`, `-c`, `-b`) are implemented.

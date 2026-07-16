@@ -77,3 +77,32 @@ class DailyChartReport:
         line = f"{day_number} {color}{bar}{RESET} {temperature_value:02d}C"
 
         return line
+
+class CombinedChartReport:
+    def generate(self, readings: list[WeatherReading], year: int, month: int):
+        sorted_readings = sorted(readings, key=lambda reading: reading.reading_date)
+
+        if not sorted_readings:
+            raise ValueError("Not enough weather data available for the requested month.")
+
+        month_heading = date(year, month, 1).strftime("%B %Y")
+        lines = [month_heading]
+
+        for reading in sorted_readings:
+            if reading.max_temp is None or reading.min_temp is None:
+                continue
+
+            day_number = reading.reading_date.strftime("%d")
+            lines.append(self.format_bar_line(day_number, reading.min_temp, reading.max_temp))
+
+        report_text = "\n".join(lines)
+
+        return report_text
+
+    def format_bar_line(self, day_number, low_temp, high_temp):
+        low_value = int(round(low_temp))
+        high_value = int(round(high_temp))
+        bar = f"{BLUE}{'+' * low_value}{RED}{'+' * high_value}{RESET}"
+        line = f"{day_number} {bar} {low_value:02d}C - {high_value:02d}C"
+
+        return line

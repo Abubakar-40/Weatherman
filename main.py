@@ -4,7 +4,7 @@ from pathlib import Path
 
 from weather.calculators import MonthlyAverageCalculator, YearlySummaryCalculator
 from weather.parser import WeatherDataParser
-from weather.reports import DailyChartReport, MonthlyAverageReport, YearlySummaryReport
+from weather.reports import CombinedChartReport, DailyChartReport, MonthlyAverageReport, YearlySummaryReport
 
 
 def parse_year_month(value):
@@ -44,6 +44,12 @@ def build_argument_parser():
         type=parse_year_month,
         help="Print the daily temperature chart for the given year and month, e.g. -c 2011/03.",
     )
+    argument_parser.add_argument(
+        "-b",
+        metavar="YYYY/M",
+        type=parse_year_month,
+        help="Print the combined daily bar chart for the given year and month, e.g. -b 2011/3.",
+    )
 
     return argument_parser
 
@@ -64,6 +70,11 @@ def run_daily_chart_report(data_parser: WeatherDataParser, year: int, month: int
     report_text = DailyChartReport().generate(readings, year, month)
     print(report_text,"\n")
 
+def run_combined_chart_report(data_parser: WeatherDataParser, year: int, month: int):
+    readings = data_parser.get_readings_for_month(year, month)
+    report_text = CombinedChartReport().generate(readings, year, month)
+    print(report_text,"\n")
+
 def main():
     argument_parser = build_argument_parser()
     arguments = argument_parser.parse_args()
@@ -80,6 +91,10 @@ def main():
         if arguments.c is not None:
             year, month = arguments.c
             run_daily_chart_report(data_parser, year, month)
+
+        if arguments.b is not None:
+            year, month = arguments.b
+            run_combined_chart_report(data_parser, year, month)
     except ValueError as error:
         print(f"Error: {error}", file=sys.stderr)
         sys.exit(1)

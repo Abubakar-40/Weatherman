@@ -141,12 +141,14 @@ March 2011
 
 ```
 weatherman/
-├── main.py               # CLI entry point: argument parsing and orchestration
+├── main.py               # Entry point: only calls into utils.py
+├── utils.py              # CLI argument parsing and report orchestration
 ├── requirements.txt
 └── weather/
-    ├── models.py          # WeatherReading and report-result data structures
+    ├── models.py          # WeatherReading and ReportResult data structures
     ├── parser.py          # Reads weather files and builds WeatherReading objects
     ├── calculators.py      # Computes report results from WeatherReading data
+    ├── constants.py       # ANSI color codes used by the chart reports
     └── reports.py         # Formats calculation results into printable text
 ```
 

@@ -1,4 +1,10 @@
-from weather.models import MonthlyAverages, YearlySummary
+from datetime import date
+
+from weather.models import MonthlyAverages, WeatherReading, YearlySummary
+
+RED = "\033[31m"
+BLUE = "\033[34m"
+RESET = "\033[0m"
 
 
 class YearlySummaryReport:
@@ -41,3 +47,33 @@ class MonthlyAverageReport:
         report_text = "\n".join([highest_line, lowest_line, humidity_line])
 
         return report_text
+
+class DailyChartReport:
+    def generate(self, readings: list[WeatherReading], year: int, month: int):
+        sorted_readings = sorted(readings, key=lambda reading: reading.reading_date)
+
+        if not sorted_readings:
+            raise ValueError("Not enough weather data available for the requested month.")
+
+        month_heading = date(year, month, 1).strftime("%B %Y")
+        lines = [month_heading]
+
+        for reading in sorted_readings:
+            day_number = reading.reading_date.strftime("%d")
+
+            if reading.max_temp is not None:
+                lines.append(self.format_bar_line(day_number, reading.max_temp, RED))
+
+            if reading.min_temp is not None:
+                lines.append(self.format_bar_line(day_number, reading.min_temp, BLUE))
+
+        report_text = "\n".join(lines)
+
+        return report_text
+
+    def format_bar_line(self, day_number, temperature, color):
+        temperature_value = int(round(temperature))
+        bar = "+" * temperature_value
+        line = f"{day_number} {color}{bar}{RESET} {temperature_value:02d}C"
+
+        return line

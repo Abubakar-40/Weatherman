@@ -4,7 +4,7 @@ from pathlib import Path
 
 from weather.calculators import MonthlyAverageCalculator, YearlySummaryCalculator
 from weather.parser import WeatherDataParser
-from weather.reports import MonthlyAverageReport, YearlySummaryReport
+from weather.reports import DailyChartReport, MonthlyAverageReport, YearlySummaryReport
 
 
 def parse_year_month(value):
@@ -38,6 +38,12 @@ def build_argument_parser():
         type=parse_year_month,
         help="Print the monthly averages report for the given year and month, e.g. -a 2005/6.",
     )
+    argument_parser.add_argument(
+        "-c",
+        metavar="YYYY/MM",
+        type=parse_year_month,
+        help="Print the daily temperature chart for the given year and month, e.g. -c 2011/03.",
+    )
 
     return argument_parser
 
@@ -53,6 +59,11 @@ def run_monthly_average_report(data_parser: WeatherDataParser, year: int, month:
     report_text = MonthlyAverageReport().generate(averages)
     print(report_text,"\n")
 
+def run_daily_chart_report(data_parser: WeatherDataParser, year: int, month: int):
+    readings = data_parser.get_readings_for_month(year, month)
+    report_text = DailyChartReport().generate(readings, year, month)
+    print(report_text,"\n")
+
 def main():
     argument_parser = build_argument_parser()
     arguments = argument_parser.parse_args()
@@ -65,6 +76,10 @@ def main():
         if arguments.a is not None:
             year, month = arguments.a
             run_monthly_average_report(data_parser, year, month)
+
+        if arguments.c is not None:
+            year, month = arguments.c
+            run_daily_chart_report(data_parser, year, month)
     except ValueError as error:
         print(f"Error: {error}", file=sys.stderr)
         sys.exit(1)

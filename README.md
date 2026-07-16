@@ -30,7 +30,7 @@ python main.py --help
 ```
 
 ```
-usage: weatherman [-h] [-e YYYY] [-a YYYY/M] data_dir
+usage: weatherman [-h] [-e YYYY] [-a YYYY/M] [-c YYYY/MM] data_dir
 
 Generate weather reports from historical weather data files.
 
@@ -43,6 +43,8 @@ options:
               2011.
   -a YYYY/M   Print the monthly averages report for the given year and month,
               e.g. -a 2005/6.
+  -c YYYY/MM  Print the daily temperature chart for the given year and month,
+              e.g. -c 2011/03.
 ```
 
 ## What's implemented
@@ -75,6 +77,25 @@ python main.py weather_files -a 2010/12
 Highest Average: 12C
 Lowest Average: 5C
 Average Mean Humidity: 44%
+```
+
+### Daily Temperature Chart (`-c YYYY/MM`)
+
+Prints two horizontal bar charts per day for the given month — the day's
+high temperature (in red) and low temperature (in blue). Colors show when
+run in an actual terminal; shown below without color codes.
+
+```bash
+python main.py weather_files -c 2011/03
+```
+
+```
+March 2011
+01 +++++ 05C
+01  00C
+02 ++++ 04C
+02  00C
+03 ++++++ 06C
 ```
 
 ### Combining multiple reports
@@ -114,6 +135,5 @@ The flow for every report follows the same pipeline:
 parser (reads files) -> calculator (computes results) -> report (formats text)
 ```
 
-More report types (daily charts, combined charts) are planned and will
-extend `models.py`, `calculators.py`, and `reports.py` with additional
-classes, following the same pipeline.
+More report types (the combined bar chart) are planned and will extend
+`reports.py` further, following the same pipeline.

@@ -1,1 +1,83 @@
 # Weatherman
+
+A command-line application that reads historical weather data files and
+generates weather reports based on the requested options.
+
+## Setup
+
+1. Create and activate a virtual environment:
+
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. Download the weather data files and place them in a folder, e.g.
+   `weather_files/`:
+
+   https://drive.google.com/file/d/1nu_ufYsrrXZfcPColXSpPYJB7-xIpkE2/view
+
+## Usage
+
+```bash
+python main.py --help
+```
+
+```
+usage: weatherman [-h] [-e YYYY] data_dir
+
+Generate weather reports from historical weather data files.
+
+positional arguments:
+  data_dir    Path to the directory containing weather data files.
+
+options:
+  -h, --help  show this help message and exit
+  -e YYYY     Print the yearly summary report for the given year, e.g. -e 2011.
+```
+
+## What's implemented
+
+### Yearly Summary Report (`-e YYYY`)
+
+Prints the highest temperature, lowest temperature, and most humid day for
+the given year, along with the day each occurred.
+
+```bash
+python main.py weather_files -e 2007
+```
+
+```
+Highest: 44C on November 04
+Lowest: -1C on February 22
+Humidity: 100% on February 11
+```
+
+## Project structure
+
+```
+weatherman/
+├── main.py               # CLI entry point: argument parsing and orchestration
+├── requirements.txt
+└── weather/
+    ├── models.py          # WeatherReading and report-result data structures
+    ├── parser.py          # Reads weather files and builds WeatherReading objects
+    ├── calculators.py      # Computes report results from WeatherReading data
+    └── reports.py         # Formats calculation results into printable text
+```
+
+The flow for every report follows the same pipeline:
+
+```
+parser (reads files) -> calculator (computes results) -> report (formats text)
+```
+
+More report types (monthly averages, daily charts, combined charts) are
+planned and will extend `models.py`, `calculators.py`, and `reports.py` with
+additional classes, following the same pipeline.

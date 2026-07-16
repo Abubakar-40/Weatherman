@@ -25,6 +25,7 @@ class YearlySummaryCalculator:
 
         return summary
 
+
 class MonthlyAverageCalculator:
     def calculate(self, readings: list[WeatherReading]):
         max_temps = [reading.max_temp for reading in readings if reading.max_temp is not None]

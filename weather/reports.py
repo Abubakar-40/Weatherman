@@ -2,6 +2,7 @@ from datetime import date
 
 from weather.models import MonthlyAverages, WeatherReading, YearlySummary
 
+
 RED = "\033[31m"
 BLUE = "\033[34m"
 RESET = "\033[0m"
@@ -39,6 +40,7 @@ class YearlySummaryReport:
 
         return line
 
+
 class MonthlyAverageReport:
     def generate(self, averages: MonthlyAverages):
         highest_line = f"Highest Average: {round(averages.avg_highest_temp)}C"
@@ -47,6 +49,7 @@ class MonthlyAverageReport:
         report_text = "\n".join([highest_line, lowest_line, humidity_line])
 
         return report_text
+
 
 class DailyChartReport:
     def generate(self, readings: list[WeatherReading], year: int, month: int):
@@ -77,6 +80,7 @@ class DailyChartReport:
         line = f"{day_number} {color}{bar}{RESET} {temperature_value:02d}C"
 
         return line
+
 
 class CombinedChartReport:
     def generate(self, readings: list[WeatherReading], year: int, month: int):

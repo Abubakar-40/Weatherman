@@ -4,6 +4,7 @@ import pandas
 
 from weather.models import WeatherReading
 
+
 MONTH_ABBREVIATIONS = {
     1: "Jan",
     2: "Feb",
@@ -18,7 +19,6 @@ MONTH_ABBREVIATIONS = {
     11: "Nov",
     12: "Dec",
 }
-
 
 class WeatherDataParser:
     def __init__(self, data_dir: Path):

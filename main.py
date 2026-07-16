@@ -53,26 +53,46 @@ def build_argument_parser():
 
     return argument_parser
 
+def exit_with_error(message):
+    print(f"Error: {message}", file=sys.stderr)
+    sys.exit(1)
+
 def run_yearly_summary_report(data_parser: WeatherDataParser, year: int):
     readings = data_parser.get_readings_for_year(year)
     summary = YearlySummaryCalculator().calculate(readings)
+
+    if summary is None:
+        exit_with_error("Not enough weather data available for the requested year.")
+
     report_text = YearlySummaryReport().generate(summary)
     print(report_text,"\n")
 
 def run_monthly_average_report(data_parser: WeatherDataParser, year: int, month: int):
     readings = data_parser.get_readings_for_month(year, month)
     averages = MonthlyAverageCalculator().calculate(readings)
+
+    if averages is None:
+        exit_with_error("Not enough weather data available for the requested month.")
+
     report_text = MonthlyAverageReport().generate(averages)
     print(report_text,"\n")
 
 def run_daily_chart_report(data_parser: WeatherDataParser, year: int, month: int):
     readings = data_parser.get_readings_for_month(year, month)
     report_text = DailyChartReport().generate(readings, year, month)
+
+    if report_text is None:
+        exit_with_error("Not enough weather data available for the requested month.")
+
     print(report_text,"\n")
 
 def run_combined_chart_report(data_parser: WeatherDataParser, year: int, month: int):
     readings = data_parser.get_readings_for_month(year, month)
     report_text = CombinedChartReport().generate(readings, year, month)
+
+    if report_text is None:
+        exit_with_error("Not enough weather data available for the requested month.")
+
     print(report_text,"\n")
 
 def main():
@@ -80,24 +100,20 @@ def main():
     arguments = argument_parser.parse_args()
     data_parser = WeatherDataParser(Path(arguments.data_dir))
 
-    try:
-        if arguments.e is not None:
-            run_yearly_summary_report(data_parser, arguments.e)
+    if arguments.e is not None:
+        run_yearly_summary_report(data_parser, arguments.e)
 
-        if arguments.a is not None:
-            year, month = arguments.a
-            run_monthly_average_report(data_parser, year, month)
+    if arguments.a is not None:
+        year, month = arguments.a
+        run_monthly_average_report(data_parser, year, month)
 
-        if arguments.c is not None:
-            year, month = arguments.c
-            run_daily_chart_report(data_parser, year, month)
+    if arguments.c is not None:
+        year, month = arguments.c
+        run_daily_chart_report(data_parser, year, month)
 
-        if arguments.b is not None:
-            year, month = arguments.b
-            run_combined_chart_report(data_parser, year, month)
-    except ValueError as error:
-        print(f"Error: {error}", file=sys.stderr)
-        sys.exit(1)
+    if arguments.b is not None:
+        year, month = arguments.b
+        run_combined_chart_report(data_parser, year, month)
 
 
 if __name__ == "__main__":

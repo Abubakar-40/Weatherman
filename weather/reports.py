@@ -53,7 +53,7 @@ class DailyChartReport:
         sorted_readings = sorted(readings, key=lambda reading: reading.reading_date)
 
         if not sorted_readings:
-            raise ValueError("Not enough weather data available for the requested month.")
+            return None
 
         month_heading = date(year, month, 1).strftime("%B %Y")
         lines = [month_heading]
@@ -83,7 +83,7 @@ class CombinedChartReport:
         sorted_readings = sorted(readings, key=lambda reading: reading.reading_date)
 
         if not sorted_readings:
-            raise ValueError("Not enough weather data available for the requested month.")
+            return None
 
         month_heading = date(year, month, 1).strftime("%B %Y")
         lines = [month_heading]

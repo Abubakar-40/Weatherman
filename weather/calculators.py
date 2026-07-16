@@ -8,7 +8,7 @@ class YearlySummaryCalculator:
         readings_with_max_humidity = [reading for reading in readings if reading.max_humidity is not None]
 
         if not readings_with_max_temp or not readings_with_min_temp or not readings_with_max_humidity:
-            raise ValueError("Not enough weather data available for the requested year.")
+            return None
 
         highest_reading = max(readings_with_max_temp, key=lambda reading: reading.max_temp)
         lowest_reading = min(readings_with_min_temp, key=lambda reading: reading.min_temp)
@@ -32,7 +32,7 @@ class MonthlyAverageCalculator:
         mean_humidities = [reading.mean_humidity for reading in readings if reading.mean_humidity is not None]
 
         if not max_temps or not min_temps or not mean_humidities:
-            raise ValueError("Not enough weather data available for the requested month.")
+            return None
 
         averages = MonthlyAverages(
             avg_highest_temp=sum(max_temps) / len(max_temps),

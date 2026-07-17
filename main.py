@@ -7,13 +7,13 @@ from utils import (
     run_monthly_average_report,
     run_yearly_summary_report,
 )
-from weather.parser import WeatherDataParser
+from weather.service import WeatherService
 
 
 def main():
     argument_parser = build_argument_parser()
     arguments = argument_parser.parse_args()
-    data_parser = WeatherDataParser(Path(arguments.data_dir))
+    data_parser = WeatherService(Path(arguments.data_dir))
 
     if arguments.e is not None:
         run_yearly_summary_report(data_parser, arguments.e)

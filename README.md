@@ -145,9 +145,8 @@ weatherman/
 ├── utils.py              # CLI argument parsing and report orchestration
 ├── requirements.txt
 └── weather/
-    ├── models.py          # WeatherReading and ReportResult data structures
-    ├── parser.py          # Reads weather files and builds WeatherReading objects
-    ├── calculators.py      # Computes report results from WeatherReading data
+    ├── classes.py         # WeatherRecord and Reports data structures
+    ├── service.py         # Reads weather files and computes report results
     ├── constants.py       # ANSI color codes used by the chart reports
     └── reports.py         # Formats calculation results into printable text
 ```
@@ -155,7 +154,7 @@ weatherman/
 The flow for every report follows the same pipeline:
 
 ```
-parser (reads files) -> calculator (computes results) -> report (formats text)
+service (reads files, computes results) -> report (formats text)
 ```
 
 All report types from the spec (`-e`, `-a`, `-c`, `-b`) are implemented.

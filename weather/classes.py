@@ -12,7 +12,7 @@ class WeatherRecord:
 
 
 @dataclass
-class ReportResult:
+class Reports:
     highest: float
     lowest: float
     humidity: float

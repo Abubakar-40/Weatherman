@@ -50,10 +50,14 @@ class ChartReport:
             day_number = reading.date.strftime("%d")
 
             if reading.max_temp is not None:
-                lines.append(self.format_bar_line(day_number, reading.max_temp, RED))
+                temperature_value = int(round(reading.max_temp))
+                bar = "+" * temperature_value
+                lines.append(f"{day_number} {RED}{bar}{RESET} {temperature_value:02d}C")
 
             if reading.min_temp is not None:
-                lines.append(self.format_bar_line(day_number, reading.min_temp, BLUE))
+                temperature_value = int(round(reading.min_temp))
+                bar = "+" * temperature_value
+                lines.append(f"{day_number} {BLUE}{bar}{RESET} {temperature_value:02d}C")
 
         report_text = "\n".join(lines)
 
@@ -73,23 +77,11 @@ class ChartReport:
                 continue
 
             day_number = reading.date.strftime("%d")
-            lines.append(self.format_combined_bar_line(day_number, reading.min_temp, reading.max_temp))
+            low_value = int(round(reading.min_temp))
+            high_value = int(round(reading.max_temp))
+            bar = f"{BLUE}{'+' * low_value}{RED}{'+' * high_value}{RESET}"
+            lines.append(f"{day_number} {bar} {low_value:02d}C - {high_value:02d}C")
 
         report_text = "\n".join(lines)
 
         return report_text
-
-    def format_bar_line(self, day_number, temperature, color):
-        temperature_value = int(round(temperature))
-        bar = "+" * temperature_value
-        line = f"{day_number} {color}{bar}{RESET} {temperature_value:02d}C"
-
-        return line
-
-    def format_combined_bar_line(self, day_number, low_temp, high_temp):
-        low_value = int(round(low_temp))
-        high_value = int(round(high_temp))
-        bar = f"{BLUE}{'+' * low_value}{RED}{'+' * high_value}{RESET}"
-        line = f"{day_number} {bar} {low_value:02d}C - {high_value:02d}C"
-
-        return line

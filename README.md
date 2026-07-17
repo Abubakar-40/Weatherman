@@ -146,7 +146,7 @@ weatherman/
 ├── requirements.txt
 └── weather/
     ├── classes.py         # WeatherRecord and Reports data structures
-    ├── service.py         # Reads weather files and computes report results
+    ├── services.py        # Reads weather files and computes report results
     ├── constants.py       # ANSI color codes used by the chart reports
     └── reports.py         # Formats calculation results into printable text
 ```
@@ -154,7 +154,7 @@ weatherman/
 The flow for every report follows the same pipeline:
 
 ```
-service (reads files, computes results) -> report (formats text)
+services (reads files, computes results) -> report (formats text)
 ```
 
 All report types from the spec (`-e`, `-a`, `-c`, `-b`) are implemented.

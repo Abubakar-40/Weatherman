@@ -7,7 +7,7 @@ from utils import (
     run_monthly_average_report,
     run_yearly_summary_report,
 )
-from weather.service import WeatherService
+from weather.services import WeatherService
 
 
 def main():
